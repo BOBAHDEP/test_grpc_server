@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package example.service;
+
+option go_package = "github.com/BOBAHDEP/grpc-test;test";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+service ServiceExampleService {
+    rpc CreateUser(CreateUserRequest) returns (User) {}
+
+    rpc UpdateUser(UpdateUserRequest) returns (User) {}
+
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+
+    rpc ListUser(ListUserRequest) returns (ListUserResponse) {}
+
+    rpc GetUser(GetUserRequest) returns (User) {}
+
+    rpc CreateItem(CreateItemRequest) returns (Item) {}
+
+    rpc UpdateItem(UpdateItemRequest) returns (Item) {}
+}
+
+// rpc
+message CreateUserRequest {
+    string name = 1;
+    int32 age = 2;
+    UserType user_type = 3;
+    repeated  CreateItemRequest items = 4;
+    optional int32 test = 5;
+}
+
+message CreateItemRequest {
+    string name = 1;
+    string user_id = 2;
+}
+
+message UpdateUserRequest {
+    string id = 1;
+    string name = 2;
+    int32 age = 3;
+    UserType user_type = 4;
+    repeated UpdateItemRequest items = 5;
+}
+
+message UpdateItemRequest {
+    string id = 1;
+    string name = 2;
+}
+
+message DeleteUserRequest {
+    string id = 1;
+}
+
+message DeleteUserResponse {}
+
+message ListUserRequest {
+    PageFilter page_filter = 1;
+}
+
+message ListUserResponse {
+    repeated User users = 1;
+}
+
+message GetUserRequest {
+    string id = 1;
+}
+
+// meta
+message PageFilter {
+    uint32 limit = 1;
+    uint32 page = 2;
+}
+
+enum UserType {
+    INVALID_USER_TYPE = 0;
+    EMPLOYEE_USER_TYPE = 1;
+    CUSTOMER_USER_TYPE = 2;
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+    int32 age = 3;
+    UserType user_type = 4;
+    repeated Item items = 5;
+    google.protobuf.Timestamp created_at = 6;
+    google.protobuf.Timestamp updated_at = 7;
+}
+
+message Item {
+    string id = 1;
+    string name = 2;
+    string user_id = 3;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}
